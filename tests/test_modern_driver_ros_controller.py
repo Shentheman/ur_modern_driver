@@ -266,11 +266,11 @@ if __name__ == "__main__":
         pass
 
     #  r = Robot(vel_control=True)
-    #  r.test_control(time_gap_send_cmd_again=-1, save=True)
-    #  r.test_control(time_gap_send_cmd_again=0.3, save=True)
-    #  r.test_stop(save=True)
+    #  r.test_control(time_gap_send_cmd_again=-1, save=False)
+    #  r.test_control(time_gap_send_cmd_again=0.3, save=False)
+    #  r.test_stop(save=False)
 
     #  r = Robot(vel_control=False)
-    #  r.test_control(time_gap_send_cmd_again=-1, save=True)
-    #  r.test_control(time_gap_send_cmd_again=0.3, save=True)
-    #  r.test_stop(save=True)
+    #  r.test_control(time_gap_send_cmd_again=-1, save=False)
+    #  r.test_control(time_gap_send_cmd_again=0.3, save=False)
+    #  r.test_stop(save=False)

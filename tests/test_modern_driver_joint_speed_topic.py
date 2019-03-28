@@ -38,7 +38,7 @@ class Robot(object):
         joint_states_subscriber = rospy.Subscriber('/joint_states', JointState,
                                                    self.cur_jtstate_callback)
 
-    def run(self):
+    def run(self, save=False):
         topic = "/ur_driver/joint_speed"
         pub = rospy.Publisher(topic, JointTrajectory, queue_size=10)
         rospy.sleep(1.0)
@@ -58,6 +58,9 @@ class Robot(object):
         self.collecting_data_starting_time = None
 
         rospy.sleep(0.5)
+
+        if not save:
+            return
 
         # https://pythonspot.com/matplotlib-scatterplot/
         data = ((self.times, [x[0] for x in self.jtposs]),
@@ -107,4 +110,4 @@ if __name__ == "__main__":
         pass
 
     r = Robot()
-    r.run()
+    r.run(save=False)

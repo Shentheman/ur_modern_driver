@@ -90,6 +90,9 @@ class Robot(object):
         rospy.sleep(4.0)
         self.collecting_data_starting_time = None
 
+        if not save:
+            return
+
         # https://pythonspot.com/matplotlib-scatterplot/
         data = ((self.times, [x[0] for x in self.jtposs]),
                 (self.times, [x[0] for x in self.jtvels]))
@@ -139,5 +142,5 @@ if __name__ == "__main__":
         pass
 
     r = Robot()
-    #  r.test_control(time_gap_send_cmd_again=-1, save=True)
-    #  r.test_control(time_gap_send_cmd_again=0.6, save=True)
+    #  r.test_control(time_gap_send_cmd_again=-1, save=False)
+    #  r.test_control(time_gap_send_cmd_again=0.6, save=False)
