@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from catkin.find_in_workspaces import find_in_workspaces
 
 # $ roslaunch ur_modern_driver ur10_bringup.launch robot_ip:=IP
+# $ roslaunch ur_bringup ur10_bringup.launch robot_ip:=IP
 
 home_pose = [
     -1.1754127787170481e-05, -1.570775145281954, 2.0338028612711512e-05,
@@ -35,6 +36,8 @@ class Robot(object):
         self.control_client = actionlib.SimpleActionClient(
             '/follow_joint_trajectory', FollowJointTrajectoryAction)
         assert (self.control_client.wait_for_server(rospy.Duration(10.0)))
+
+        rospy.sleep(1)
 
     def test_control(self, time_gap_send_cmd_again=-1, save=False):
         freq = 500
@@ -122,6 +125,38 @@ class Robot(object):
         print path
         plt.savefig(path)
 
+    def test_stop(self, save=False):
+        freq = 500
+        rate = rospy.Rate(freq)
+
+        goal_pose = copy.deepcopy(self.cur_jtpos)
+        goal_pose[0] -= 0.2
+        pos2 = list(goal_pose)
+        vel2 = [0.0] * self.num_dofs
+
+        completion_time = 2.0
+
+        goal = FollowJointTrajectoryGoal()
+        goal.trajectory.joint_names = self.joint_names
+        point = JointTrajectoryPoint()
+        point.positions = pos2
+        point.velocities = vel2
+        point.time_from_start = rospy.Time(completion_time)
+        goal.trajectory.points.append(point)
+
+        self.collecting_data_starting_time = rospy.Time.now()
+        self.control_client.send_goal(goal)
+
+        rospy.sleep(0.3)
+
+        # https://groups.google.com/forum/#!topic/swri-ros-pkg-dev/qo9pu4PbEJY
+        # The correct way to stop the robot while executing a trajectory is not to send another goal with an empty trajectory. Rather you should cancel your previous goal request with a call to ac_->cancelGoal(); .
+        self.control_client.cancel_all_goals()
+
+        rospy.sleep(2.0)
+        self.collecting_data_starting_time = None
+
+
     def cur_jtstate_callback(self, data):
         self.cur_jtpos = [0.0] * self.num_dofs
         self.cur_jtvel = [0.0] * self.num_dofs
@@ -142,5 +177,6 @@ if __name__ == "__main__":
         pass
 
     r = Robot()
+    #  r.test_stop(save=False)
     #  r.test_control(time_gap_send_cmd_again=-1, save=False)
     #  r.test_control(time_gap_send_cmd_again=0.6, save=False)

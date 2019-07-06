@@ -1,6 +1,7 @@
 # Controller options
 ## Universal Robots Controller
 * `roslaunch ur_modern_driver ur10_bringup.launch robot_ip:=IP`
+  * Or `roslaunch ur_bringup ur10_bringup.launch robot_ip:=IP`
   * Implemented by Universal Robots
   * Available in both [`ur_modern_driver`](https://github.com/ros-industrial/ur_modern_driver) and [`universal_robot`](https://github.com/ros-industrial/universal_robot)
 * These controllers provide a ROS action interface - `/follow_joint_trajectory`
@@ -67,6 +68,7 @@
     * Configure `test_modern_driver_ros_controller.py` for `vel` control mode
 * Regular Universal Robots Controller
   * `roslaunch ur_modern_driver ur10_bringup.launch robot_ip:=IP`
+    * Or `roslaunch ur_bringup ur10_bringup.launch robot_ip:=IP`
   * `rosrun ur_modern_driver test_modern_driver_regular_controller.py`
 * `/joint_speed` interface for visual servoing
   * `roslaunch ur_modern_driver ur10_bringup.launch robot_ip:=IP`
